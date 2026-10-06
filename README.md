@@ -9,3 +9,8 @@ Este proyecto es una aplicación web CRUD para *Requisitos de Software* que real
 #  
 *Proyecto hecho con HTML, CSS, JavaScript y Supabase*
 **Para un parcial de Requerimientos de Software del estudiante Leonardo Escobar**
+
+##  Publicación
+
+- **Repositorio GitHub:** https://github.com/LeoEstudio/Registro-de-estudiantes
+- **GitHub Pages:** https://leoestudio.github.io/Registro-de-estudiantes/
