@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Aplicación web para registrar estudiantes, materias y notas con Supabase.">
+<meta name="theme-color" content="#12332c">
+<title>Notas de estudiantes</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎓%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="estilos.css">
+<style>
+  body { background:#eef2f0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  h1, h2 { font-family: Georgia, "Times New Roman", serif; }
+
+  .hero { background:#12332c; color:#fff; padding:36px 16px 64px; }
+  .hero-in { max-width:860px; margin:0 auto; }
+  .hero h1 { font-size:clamp(1.7rem, 5vw, 2.4rem); margin:0 0 6px; }
+  .hero p { margin:0; color:#b9d2cb; max-width:56ch; }
+
+  main { margin-top:-36px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:14px; padding:18px; box-shadow:0 8px 24px rgba(18,51,44,.07); }
+  .ayuda { color:var(--mute); font-size:.95rem; margin:-4px 0 14px; }
+  summary { cursor:pointer; font-weight:600; }
+
+  #msg { margin:12px 2px; }
+  #msg.err { font-weight:600; }
+
+  nav { border-bottom:0; gap:6px; margin:16px 0 12px; }
+  nav button { border:0; border-radius:999px; padding:7px 16px; }
+  nav button:hover { background:#dde7e3; }
+  nav button[aria-selected="true"] { background:#12332c; color:#fff; }
+
+  input, select { border-radius:8px; }
+  button { border-radius:8px; font-weight:600; }
+  table { border:0; }
+  tbody tr:hover { background:#f6f8f7; }
+  td:last-child { text-align:right; }
+
+  footer { text-align:center; color:var(--mute); font-size:.9rem; padding:0 16px 32px; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <h1>Notas de estudiantes</h1>
+    <p>Registra estudiantes, materias y calificaciones. Todo se guarda en tu base de datos de Supabase.</p>
+    <p>Web realizada para un proyecto de Requerimientos de Software</p>
+  </div>
+</header>
+
+<main>
+  <details id="cfg" class="card">
+    <summary>Conexión a Supabase</summary>
+    <div class="row conexion">
+      <input id="url" placeholder="Project URL (https://xxxx.supabase.co)" aria-label="Project URL" autocomplete="off">
+      <input id="key" placeholder="Publishable key (sb_publishable_...)" aria-label="Clave pública" autocomplete="off">
+      <button id="conectar">Conectar</button>
+    </div>
+    <p class="ayuda">Estos datos se guardan solo en tu navegador, no en el código.</p>
+  </details>
+  <p id="msg" role="status"></p>
+
+  <nav role="tablist" aria-label="Secciones">
+    <button role="tab" data-tab="est" aria-selected="true">Estudiantes</button>
+    <button role="tab" data-tab="mat" aria-selected="false">Materias</button>
+    <button role="tab" data-tab="not" aria-selected="false">Notas</button>
+  </nav>
+
+  <section id="est" class="card">
+    <h2>Nuevo estudiante</h2>
+    <p class="ayuda">El código debe ser único. El promedio se calcula con las notas registradas.</p>
+    <div class="row">
+      <input id="e-cod" placeholder="Código" aria-label="Código" autocomplete="off">
+      <input id="e-nom" placeholder="Nombre completo" aria-label="Nombre completo" autocomplete="off">
+      <input id="e-cor" type="email" placeholder="Correo (opcional)" aria-label="Correo" autocomplete="off">
+      <button id="e-add">Guardar estudiante</button>
+    </div>
+    <div class="wrap"><table><thead><tr><th>Código</th><th>Nombre</th><th>Correo</th><th>Promedio</th><th></th></tr></thead><tbody id="e-list"></tbody></table></div>
+  </section>
+
+  <section id="mat" class="card" hidden>
+    <h2>Nueva materia</h2>
+    <p class="ayuda">Agrega las materias antes de registrar notas.</p>
+    <div class="row">
+      <input id="m-nom" placeholder="Nombre de la materia" aria-label="Nombre de la materia" autocomplete="off">
+      <button id="m-add">Guardar materia</button>
+    </div>
+    <div class="wrap"><table><thead><tr><th>Materia</th><th></th></tr></thead><tbody id="m-list"></tbody></table></div>
+  </section>
+
+  <section id="not" class="card" hidden>
+    <h2>Registrar nota</h2>
+    <p class="ayuda">Escala de 0.0 a 5.0. Si repites estudiante y materia, se actualiza la nota.</p>
+    <div class="row">
+      <select id="n-est" aria-label="Estudiante"></select>
+      <select id="n-mat" aria-label="Materia"></select>
+      <input id="n-val" type="number" min="0" max="5" step="0.1" placeholder="Nota" aria-label="Nota">
+      <button id="n-add">Guardar nota</button>
+    </div>
+    <div class="wrap"><table><thead><tr><th>Estudiante</th><th>Materia</th><th>Nota</th><th></th></tr></thead><tbody id="n-list"></tbody></table></div>
+  </section>
+</main>
+
+<footer>Hecho con HTML, CSS, JavaScript y Supabase</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
